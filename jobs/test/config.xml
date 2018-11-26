@@ -44,38 +44,11 @@
       <command>virtualenv venv -p /usr/bin/python
 . venv/bin/activate
 
-# py.test -q test.py --html=ut-results/index.html --alluredir=allure-results --cov=. --cov-report=html || echo &quot;pytest done&quot;
-py.test -q test.py --junitxml=pytest.xml --alluredir=allure-results --cov=. --cov-report=xml || echo &quot;pytest done&quot;
+py.test -q test.py --alluredir=allure-results --cov=. --cov-report=xml || echo &quot;pytest done&quot;
 pylint -f parseable distsuper &gt; pylint.xml || echo &quot;pylint done&quot;</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
-    <htmlpublisher.HtmlPublisher plugin="htmlpublisher@1.17">
-      <reportTargets>
-        <htmlpublisher.HtmlPublisherTarget>
-          <reportName>单元测试报告</reportName>
-          <reportDir>ut-results</reportDir>
-          <reportFiles>index.html</reportFiles>
-          <alwaysLinkToLastBuild>false</alwaysLinkToLastBuild>
-          <reportTitles>unittest</reportTitles>
-          <keepAll>true</keepAll>
-          <allowMissing>true</allowMissing>
-          <includes>**/*</includes>
-          <escapeUnderscores>true</escapeUnderscores>
-        </htmlpublisher.HtmlPublisherTarget>
-        <htmlpublisher.HtmlPublisherTarget>
-          <reportName>代码覆盖率报告</reportName>
-          <reportDir>htmlcov</reportDir>
-          <reportFiles>index.html</reportFiles>
-          <alwaysLinkToLastBuild>false</alwaysLinkToLastBuild>
-          <reportTitles>coverage</reportTitles>
-          <keepAll>true</keepAll>
-          <allowMissing>true</allowMissing>
-          <includes>**/*</includes>
-          <escapeUnderscores>true</escapeUnderscores>
-        </htmlpublisher.HtmlPublisherTarget>
-      </reportTargets>
-    </htmlpublisher.HtmlPublisher>
     <ru.yandex.qatools.allure.jenkins.AllureReportPublisher plugin="allure-jenkins-plugin@2.27.0">
       <jdk></jdk>
       <properties/>
@@ -153,12 +126,6 @@ pylint -f parseable distsuper &gt; pylint.xml || echo &quot;pylint done&quot;</c
       <sourceEncoding>ASCII</sourceEncoding>
       <enableNewApi>false</enableNewApi>
     </hudson.plugins.cobertura.CoberturaPublisher>
-    <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.26.1">
-      <testResults>pytest.xml</testResults>
-      <keepLongStdio>false</keepLongStdio>
-      <healthScaleFactor>1.0</healthScaleFactor>
-      <allowEmptyResults>false</allowEmptyResults>
-    </hudson.tasks.junit.JUnitResultArchiver>
     <hudson.plugins.violations.ViolationsPublisher plugin="violations@0.7.11">
       <config>
         <suppressions class="sorted-set"/>
