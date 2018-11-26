@@ -59,7 +59,7 @@ pylint -f parseable distsuper &gt; pylint.xml || echo &quot;pylint done&quot;</c
           <alwaysLinkToLastBuild>false</alwaysLinkToLastBuild>
           <reportTitles>unittest</reportTitles>
           <keepAll>true</keepAll>
-          <allowMissing>false</allowMissing>
+          <allowMissing>true</allowMissing>
           <includes>**/*</includes>
           <escapeUnderscores>true</escapeUnderscores>
         </htmlpublisher.HtmlPublisherTarget>
@@ -70,7 +70,7 @@ pylint -f parseable distsuper &gt; pylint.xml || echo &quot;pylint done&quot;</c
           <alwaysLinkToLastBuild>false</alwaysLinkToLastBuild>
           <reportTitles>coverage</reportTitles>
           <keepAll>true</keepAll>
-          <allowMissing>false</allowMissing>
+          <allowMissing>true</allowMissing>
           <includes>**/*</includes>
           <escapeUnderscores>true</escapeUnderscores>
         </htmlpublisher.HtmlPublisherTarget>
