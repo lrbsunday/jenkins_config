@@ -23,20 +23,30 @@
         stage(&apos;Build&apos;) {
             agent none
             steps {
-                echo &apos;in Build&apos;
-                sh &apos;printenv&apos;
+                echo &apos;Building&apos;
             }
         }
         stage(&apos;Test&apos;) {
             agent none
             steps {
-                echo &apos;in Test&apos;
+                echo &apos;Testing&apos;
+            }
+        }
+        stage(&apos;Confirm&apos;) {
+            steps {
+                input &quot;Does the staging environment look ok?&quot;
+            }
+        }
+        stage(&apos;Deploy&apos;) {
+            steps {
+                echo &apos;Deploying&apos;
             }
         }
     }
     post {
         always {
             echo &apos;This will always run&apos;
+            junit &apos;build/reports/**/*.xml&apos;
         }
         success {
             echo &apos;This will run only if successful&apos;
