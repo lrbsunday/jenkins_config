@@ -15,11 +15,16 @@
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.60">
     <script>pipeline {
     agent any
+    environment {
+        DISABLE_AUTH = &apos;true&apos;
+        DB_ENGINE    = &apos;sqlite&apos;
+    }
     stages {
         stage(&apos;Build&apos;) {
             agent none
             steps {
                 echo &apos;in Build&apos;
+                sh &apos;export&apos;
             }
         }
         stage(&apos;Test&apos;) {
