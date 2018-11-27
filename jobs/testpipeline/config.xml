@@ -46,7 +46,6 @@
     post {
         always {
             echo &apos;This will always run&apos;
-            junit &apos;build/reports/**/*.xml&apos;
         }
         success {
             echo &apos;This will run only if successful&apos;
