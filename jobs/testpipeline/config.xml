@@ -6,26 +6,43 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties/>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.60">
-    <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
-      <configVersion>2</configVersion>
-      <userRemoteConfigs>
-        <hudson.plugins.git.UserRemoteConfig>
-          <url>https://github.com/lrbsunday/simple-python-pyinstaller-app</url>
-          <credentialsId>ddb2c5d8-aa15-4608-aca1-44c5e3558a5d</credentialsId>
-        </hudson.plugins.git.UserRemoteConfig>
-      </userRemoteConfigs>
-      <branches>
-        <hudson.plugins.git.BranchSpec>
-          <name>*/master</name>
-        </hudson.plugins.git.BranchSpec>
-      </branches>
-      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-      <submoduleCfg class="list"/>
-      <extensions/>
-    </scm>
-    <scriptPath>jenkins/Jenkinsfile</scriptPath>
-    <lightweight>false</lightweight>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.60">
+    <script>pipeline {
+    agent any
+    stages {
+        stage(&apos;Build&apos;) {
+            agent none
+            steps {
+                echo &apos;in Build&apos;
+            }
+        }
+        stage(&apos;Test&apos;) {
+            agent none
+            steps {
+                echo &apos;in Test&apos;
+            }
+        }
+    }
+    post {
+        always {
+            echo &apos;This will always run&apos;
+        }
+        success {
+            echo &apos;This will run only if successful&apos;
+        }
+        failure {
+            echo &apos;This will run only if failed&apos;
+        }
+        unstable {
+            echo &apos;This will run only if the run was marked as unstable&apos;
+        }
+        changed {
+            echo &apos;This will run only if the state of the Pipeline has changed&apos;
+            echo &apos;For example, if the Pipeline was previously failing but is now successful&apos;
+        }
+    }
+}</script>
+    <sandbox>true</sandbox>
   </definition>
   <triggers/>
   <disabled>false</disabled>
