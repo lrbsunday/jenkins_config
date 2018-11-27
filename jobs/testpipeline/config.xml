@@ -24,7 +24,7 @@
             agent none
             steps {
                 echo &apos;in Build&apos;
-                sh &apos;export&apos;
+                sh &apos;printenv&apos;
             }
         }
         stage(&apos;Test&apos;) {
