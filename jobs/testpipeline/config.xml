@@ -15,6 +15,9 @@
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.60">
     <script>pipeline {
     agent { docker &apos;python:3.5.1&apos; }
+    options {
+        timeout(time: 1, unit: &apos;HOURS&apos;)
+    }
     environment {
         DISABLE_AUTH = &apos;true&apos;
         DB_ENGINE    = &apos;sqlite&apos;
