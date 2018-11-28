@@ -44,6 +44,14 @@
                 input &quot;Does the staging environment look ok?&quot;
             }
         }
+        stage(&apos;Deploy - not run&apos;) {
+            when {
+                branch &apos;production&apos;
+            }
+            steps {
+                echo &apos;Deploying&apos;
+            }
+        }
         stage(&apos;Deploy&apos;) {
             steps {
                 echo &apos;Deploying&apos;
