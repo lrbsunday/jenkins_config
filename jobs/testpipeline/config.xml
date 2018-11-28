@@ -18,6 +18,9 @@
     options {
         timeout(time: 1, unit: &apos;HOURS&apos;)
     }
+    parameters {
+        string(name: &apos;PERSON&apos;, defaultValue: &apos;Mr Jenkins&apos;, description: &apos;Who should I say hello to?&apos;)
+    }
     environment {
         DISABLE_AUTH = &apos;true&apos;
         DB_ENGINE    = &apos;sqlite&apos;
