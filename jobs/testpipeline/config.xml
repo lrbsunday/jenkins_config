@@ -14,7 +14,7 @@
   <properties/>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.60">
     <script>pipeline {
-    agent any
+    agent { docker &apos;python:3.5.1&apos; }
     environment {
         DISABLE_AUTH = &apos;true&apos;
         DB_ENGINE    = &apos;sqlite&apos;
@@ -24,6 +24,7 @@
             agent none
             steps {
                 echo &apos;Building&apos;
+                sh &apos;python --version&apos;
             }
         }
         stage(&apos;Test&apos;) {
