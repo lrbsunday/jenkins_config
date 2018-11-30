@@ -14,23 +14,6 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-      <triggers>
-        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.3">
-          <spec></spec>
-        </com.cloudbees.jenkins.GitHubPushTrigger>
-      </triggers>
-    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-    <hudson.model.ParametersDefinitionProperty>
-      <parameterDefinitions>
-        <hudson.model.StringParameterDefinition>
-          <name>PERSON</name>
-          <description>Who should I say hello to?</description>
-          <defaultValue>Mr Jenkins</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-      </parameterDefinitions>
-    </hudson.model.ParametersDefinitionProperty>
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.29.3">
       <projectUrl>https://github.com/lrbsunday/distsuper/</projectUrl>
       <displayName></displayName>
@@ -43,6 +26,23 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>PERSON</name>
+          <description>Who should I say hello to?</description>
+          <defaultValue>Mr Jenkins</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.3">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.60">
     <script>pipeline {
@@ -79,7 +79,6 @@
             post {
                 always {
                     junit &apos;test-reports/results.xml&apos;
-                    allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
                 }
             }
         }
@@ -105,6 +104,7 @@
     post {
         always {
             echo &apos;This will always run&apos;
+            allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
         }
         success {
             echo &apos;This will run only if successful&apos;
