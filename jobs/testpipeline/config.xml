@@ -49,9 +49,19 @@
             }
         }
         stage(&apos;Test&apos;) {
-            agent none
+            agent {
+                docker {
+                    image ‘qnib/pytest‘
+                }
+            }
             steps {
                 echo &apos;Testing&apos;
+                sh ‘py.test --verbose --junit-xml test-reports/results.xml test.py‘
+            }
+            post {
+                always {
+                    junit ‘test-reports/results.xml‘
+                }
             }
         }
         stage(&apos;Confirm&apos;) {
