@@ -27,7 +27,8 @@
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.60">
     <script>pipeline {
-    agent { docker &apos;python:3.5.1&apos; }
+#     agent { docker &apos;python:3.5.1&apos; }
+    agent any
     options {
         timeout(time: 1, unit: &apos;HOURS&apos;)
     }
@@ -42,6 +43,7 @@
         stage(&apos;Build&apos;) {
             agent none
             steps {
+                sh &apos;docker ps&apos;
                 echo &apos;Building&apos;
                 sh &apos;python --version&apos;
             }
