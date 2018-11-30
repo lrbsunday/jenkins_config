@@ -74,7 +74,7 @@
                 always {
                     junit &apos;test-reports/results.xml&apos;
                     allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: &apos;htmlcov&apos;, reportFiles: &apos;index.html&apos;, reportName: &apos;代码覆盖率&apos;, reportTitles: &apos;代码覆盖率&apos;])
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: &apos;htmlcov&apos;, reportFiles: &apos;index.html&apos;, reportName: &apos;代码覆盖率&apos;, reportTitles: &apos;代码覆盖率&apos;])
                 }
             }
         }
