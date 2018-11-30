@@ -50,16 +50,16 @@
         stage(&apos;Test&apos;) {
             agent {
                 docker {
-                    image ‘qnib/pytest‘
+                    image &apos;qnib/pytest&apos;
                 }
             }
             steps {
                 echo &apos;Testing&apos;
-                sh ‘py.test --verbose --junit-xml test-reports/results.xml test.py‘
+                sh &apos;py.test --verbose --junit-xml test-reports/results.xml test.py&apos;
             }
             post {
                 always {
-                    junit ‘test-reports/results.xml‘
+                    junit &apos;test-reports/results.xml&apos;
                 }
             }
         }
