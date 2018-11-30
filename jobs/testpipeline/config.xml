@@ -14,23 +14,6 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-      <triggers>
-        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.3">
-          <spec></spec>
-        </com.cloudbees.jenkins.GitHubPushTrigger>
-      </triggers>
-    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-    <hudson.model.ParametersDefinitionProperty>
-      <parameterDefinitions>
-        <hudson.model.StringParameterDefinition>
-          <name>PERSON</name>
-          <description>Who should I say hello to?</description>
-          <defaultValue>Mr Jenkins</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-      </parameterDefinitions>
-    </hudson.model.ParametersDefinitionProperty>
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.29.3">
       <projectUrl>https://github.com/lrbsunday/distsuper/</projectUrl>
       <displayName></displayName>
@@ -43,30 +26,102 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>PERSON</name>
+          <description>Who should I say hello to?</description>
+          <defaultValue>Mr Jenkins</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.3">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.60">
-    <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
-      <configVersion>2</configVersion>
-      <userRemoteConfigs>
-        <hudson.plugins.git.UserRemoteConfig>
-          <url>https://github.com/lrbsunday/distsuper</url>
-          <credentialsId>ddb2c5d8-aa15-4608-aca1-44c5e3558a5d</credentialsId>
-        </hudson.plugins.git.UserRemoteConfig>
-      </userRemoteConfigs>
-      <branches>
-        <hudson.plugins.git.BranchSpec>
-          <name>*/master</name>
-        </hudson.plugins.git.BranchSpec>
-        <hudson.plugins.git.BranchSpec>
-          <name>*/develop</name>
-        </hudson.plugins.git.BranchSpec>
-      </branches>
-      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-      <submoduleCfg class="list"/>
-      <extensions/>
-    </scm>
-    <scriptPath>Jenkinsfile</scriptPath>
-    <lightweight>true</lightweight>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.60">
+    <script>pipeline {
+    agent any
+    options {
+        timeout(time: 1, unit: &apos;HOURS&apos;)
+    }
+    parameters {
+        string(name: &apos;PERSON&apos;, defaultValue: &apos;Mr Jenkins&apos;, description: &apos;Who should I say hello to?&apos;)
+    }
+    environment {
+        DISABLE_AUTH = &apos;true&apos;
+        DB_ENGINE    = &apos;sqlite&apos;
+    }
+    stages {
+        stage(&apos;Build&apos;) {
+            steps {
+                sh &apos;docker ps&apos;
+                echo &apos;Building&apos;
+                sh &apos;python --version&apos;
+            }
+        }
+        stage(&apos;Test&apos;) {
+            agent {
+                docker {
+                    image &apos;qnib/pytest&apos;
+                }
+            }
+            steps {
+                echo &apos;Testing&apos;
+                sh &apos;virtualenv venv &amp;&amp; . venv/bin/activate &amp;&amp; pip install pytest-allure-adaptor pytest-cov&apos;
+                sh &apos;. venv/bin/activate &amp;&amp; py.test --verbose --junit-xml test-reports/results.xml --alluredir ${workspace}/allure-results test.py&apos;
+            }
+            post {
+                always {
+                    junit &apos;test-reports/results.xml&apos;
+                    allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
+                }
+            }
+        }
+        stage(&apos;Confirm&apos;) {
+            steps {
+                input &quot;Does the staging environment look ok?&quot;
+            }
+        }
+        stage(&apos;Deploy - not run&apos;) {
+            when {
+                branch &apos;production&apos;
+            }
+            steps {
+                echo &apos;Deploying&apos;
+            }
+        }
+        stage(&apos;Deploy&apos;) {
+            steps {
+                echo &apos;Deploying&apos;
+            }
+        }
+    }
+    post {
+        always {
+            echo &apos;This will always run&apos;
+        }
+        success {
+            echo &apos;This will run only if successful&apos;
+        }
+        failure {
+            echo &apos;This will run only if failed&apos;
+        }
+        unstable {
+            echo &apos;This will run only if the run was marked as unstable&apos;
+        }
+        changed {
+            echo &apos;This will run only if the state of the Pipeline has changed&apos;
+            echo &apos;For example, if the Pipeline was previously failing but is now successful&apos;
+        }
+    }
+}</script>
+    <sandbox>true</sandbox>
   </definition>
   <triggers/>
   <disabled>false</disabled>
