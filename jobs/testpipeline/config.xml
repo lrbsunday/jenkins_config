@@ -75,7 +75,8 @@
                     junit &apos;test-reports/results.xml&apos;
                     allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
                     // publishCoverage adapters: [coberturaAdapter(&apos;coverage.xml&apos;)], sourceFileResolver: sourceFiles(&apos;NEVER_STORE&apos;)
-                    cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: &apos;coverage.xml&apos;, conditionalCoverageTargets: &apos;70, 0, 0&apos;, failUnhealthy: false, failUnstable: false, lineCoverageTargets: &apos;80, 0, 0&apos;, maxNumberOfBuilds: 0, methodCoverageTargets: &apos;80, 0, 0&apos;, onlyStable: false, sourceEncoding: &apos;ASCII&apos;, zoomCoverageChart: false
+                    //cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: &apos;coverage.xml&apos;, conditionalCoverageTargets: &apos;70, 0, 0&apos;, failUnhealthy: false, failUnstable: false, lineCoverageTargets: &apos;80, 0, 0&apos;, maxNumberOfBuilds: 0, methodCoverageTargets: &apos;80, 0, 0&apos;, onlyStable: false, sourceEncoding: &apos;ASCII&apos;, zoomCoverageChart: false
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: &apos;htmlcov&apos;, reportFiles: &apos;index.html&apos;, reportName: &apos;代码覆盖率&apos;, reportTitles: &apos;代码覆盖率&apos;])
                 }
             }
         }
