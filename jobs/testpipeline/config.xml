@@ -41,7 +41,6 @@
     }
     stages {
         stage(&apos;Build&apos;) {
-            agent none
             steps {
                 sh &apos;docker ps&apos;
                 echo &apos;Building&apos;
