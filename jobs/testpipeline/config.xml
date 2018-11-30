@@ -14,23 +14,6 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-      <triggers>
-        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.3">
-          <spec></spec>
-        </com.cloudbees.jenkins.GitHubPushTrigger>
-      </triggers>
-    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-    <hudson.model.ParametersDefinitionProperty>
-      <parameterDefinitions>
-        <hudson.model.StringParameterDefinition>
-          <name>PERSON</name>
-          <description>Who should I say hello to?</description>
-          <defaultValue>Mr Jenkins</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-      </parameterDefinitions>
-    </hudson.model.ParametersDefinitionProperty>
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.29.3">
       <projectUrl>https://github.com/lrbsunday/distsuper/</projectUrl>
       <displayName></displayName>
@@ -43,6 +26,23 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>PERSON</name>
+          <description>Who should I say hello to?</description>
+          <defaultValue>Mr Jenkins</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.3">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.60">
     <script>pipeline {
@@ -74,7 +74,8 @@
                 always {
                     junit &apos;test-reports/results.xml&apos;
                     allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
-                    publishCoverage adapters: [coberturaAdapter(&apos;coverage.xml&apos;)], sourceFileResolver: sourceFiles(&apos;NEVER_STORE&apos;)
+                    // publishCoverage adapters: [coberturaAdapter(&apos;coverage.xml&apos;)], sourceFileResolver: sourceFiles(&apos;NEVER_STORE&apos;)
+                    cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: &apos;coverage.xml&apos;, conditionalCoverageTargets: &apos;70, 0, 0&apos;, failUnhealthy: false, failUnstable: false, lineCoverageTargets: &apos;80, 0, 0&apos;, maxNumberOfBuilds: 0, methodCoverageTargets: &apos;80, 0, 0&apos;, onlyStable: false, sourceEncoding: &apos;ASCII&apos;, zoomCoverageChart: false
                 }
             }
         }
