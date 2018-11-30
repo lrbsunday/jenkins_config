@@ -79,7 +79,8 @@
             post {
                 always {
                     junit &apos;test-reports/results.xml&apos;
-                    allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
+                    archiveArtifacts artifacts: &apos;allure-results&apos;, fingerprint: true
+                    // allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
                 }
             }
         }
