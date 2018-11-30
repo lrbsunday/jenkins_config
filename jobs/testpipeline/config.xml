@@ -69,7 +69,7 @@
             steps {
                 echo &apos;Testing&apos;
                 sh &apos;virtualenv venv &amp;&amp; . venv/bin/activate &amp;&amp; pip install pylint pytest\\&lt;4 pytest-allure-adaptor pytest-cov&apos;
-                sh &apos;. venv/bin/activate &amp;&amp; py.test --verbose --junit-xml test-reports/results.xml --cov-report=html --cov=distsuper --alluredir allure-results test.py&apos;
+                sh &apos;. venv/bin/activate &amp;&amp; py.test --verbose --junit-xml test-reports/results.xml --cov-report=xml --cov=distsuper --alluredir allure-results test.py&apos;
                 sh &apos;. venv/bin/activate &amp;&amp; pylint --output-format=parseable distsuper &gt; pylint.xml&apos;
             }
             post {
