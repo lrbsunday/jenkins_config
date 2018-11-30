@@ -14,23 +14,6 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-      <triggers>
-        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.3">
-          <spec></spec>
-        </com.cloudbees.jenkins.GitHubPushTrigger>
-      </triggers>
-    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
-    <hudson.model.ParametersDefinitionProperty>
-      <parameterDefinitions>
-        <hudson.model.StringParameterDefinition>
-          <name>PERSON</name>
-          <description>Who should I say hello to?</description>
-          <defaultValue>Mr Jenkins</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-      </parameterDefinitions>
-    </hudson.model.ParametersDefinitionProperty>
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.29.3">
       <projectUrl>https://github.com/lrbsunday/distsuper/</projectUrl>
       <displayName></displayName>
@@ -43,6 +26,23 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>PERSON</name>
+          <description>Who should I say hello to?</description>
+          <defaultValue>Mr Jenkins</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.3">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.60">
     <script>pipeline {
@@ -74,7 +74,7 @@
             steps {
                 echo &apos;Testing&apos;
                 sh &apos;virtualenv venv &amp;&amp; . venv/bin/activate &amp;&amp; pip install pytest-allure-adaptor pytest-cov&apos;
-                sh &apos;. venv/bin/activate &amp;&amp; py.test --verbose --junit-xml test-reports/results.xml --alluredir ${workspace}/allure-results test.py&apos;
+                sh &apos;. venv/bin/activate &amp;&amp; py.test --verbose --junit-xml test-reports/results.xml --alluredir allure-results test.py&apos;
             }
             post {
                 always {
