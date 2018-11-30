@@ -66,21 +66,15 @@
             }
         }
         stage(&apos;Test&apos;) {
-            agent {
-                docker {
-                    image &apos;qnib/pytest&apos;
-                }
-            }
             steps {
                 echo &apos;Testing&apos;
-                sh &apos;virtualenv venv &amp;&amp; . venv/bin/activate &amp;&amp; pip install pytest-allure-adaptor pytest-cov&apos;
+                sh &apos;virtualenv venv &amp;&amp; . venv/bin/activate &amp;&amp; pip install pytest&lt;4 pytest-allure-adaptor pytest-cov&apos;
                 sh &apos;. venv/bin/activate &amp;&amp; py.test --verbose --junit-xml test-reports/results.xml --alluredir allure-results test.py&apos;
             }
             post {
                 always {
                     junit &apos;test-reports/results.xml&apos;
-                    archiveArtifacts artifacts: &apos;allure-results&apos;, fingerprint: true
-                    // allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
+                    allure includeProperties: false, jdk: &apos;&apos;, results: [[path: &apos;allure-results&apos;]]
                 }
             }
         }
